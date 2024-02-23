@@ -1,6 +1,0 @@
-hooks/
-slices/
-App.tsx
-main.tsx
-store.ts
-vite-env.d.ts

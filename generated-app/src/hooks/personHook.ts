@@ -7,7 +7,7 @@ import { useGetPersonQuery, useUpdatePersonMutation } from "../slices/apiSlice";
 
 export function usePerson({ filter: { id } }: { filter: { id: string } }) {
   const dispatch = useDispatch();
-  const { data } = useGetPersonQuery(id);
+  const { data, isError, isFetching, isSuccess } = useGetPersonQuery(id);
 
   useEffect(() => {
     if (data) {
@@ -22,5 +22,10 @@ export function usePerson({ filter: { id } }: { filter: { id: string } }) {
 
   const [updatePersonMutation] = useUpdatePersonMutation();
 
-  return { person, setPerson: setPersonWithDispatch, updatePersonMutation };
+  return {
+    person,
+    setPerson: setPersonWithDispatch,
+    updatePersonMutation,
+    statusProperties: { isError, isFetching, isSuccess },
+  };
 }

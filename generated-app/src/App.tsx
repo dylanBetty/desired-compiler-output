@@ -1,56 +1,29 @@
-import { FormEvent, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
-
-import { fetchPerson } from "./queries";
-import { updatePerson } from "./mutations";
-import { Person } from "./types";
-import { Input } from "./components/Input";
-import { Button } from "./components/Button";
+import { usePerson } from "./hooks/personHook";
 
 export function App() {
-  // initial person pageVariable (with empty values)
-  const [person, setPerson] = useState<Person>({ id: "", name: "" });
-
-  // query person
-  const { data, isLoading } = useQuery<Person>("person", () =>
-    fetchPerson("1")
-  );
-
-  // fill person pageVariable when query is done
-  useEffect(() => {
-    data && setPerson(data);
-  }, [data]);
-
-  // setup the mutation function + action response
-  const updatePersonMutation = useMutation(updatePerson, {
-    onSuccess: (data) => {
-      // map response onto page variable
-      setPerson(data);
-    },
+  // Person pageVariable
+  const { person, setPerson, updatePersonMutation } = usePerson({
+    filter: { id: "1" },
   });
 
-  // interactions (onSubmit => runAction updatePerson, with page state)
-  const onSubmitHandler = (e: FormEvent) => {
+  // onSubmit interaction
+  const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    updatePersonMutation.mutate(person);
+    updatePersonMutation(person);
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
+  // Components
   return (
-    <>
-      <h1>Update form</h1>
+    <div>
       <form onSubmit={onSubmitHandler}>
-        <Input
+        <input
           value={person.name}
-          onChange={(newName) => {
-            setPerson((prev) => ({ ...prev, name: newName }));
+          onChange={(e) => {
+            setPerson({ name: e.target.value });
           }}
         />
-        <Button>Submit</Button>
+        <button type="submit">Submit</button>
       </form>
-    </>
+    </div>
   );
 }

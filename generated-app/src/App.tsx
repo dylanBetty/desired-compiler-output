@@ -1,18 +1,18 @@
 import { usePerson } from "./hooks/personHook";
 
 export function App() {
-  // Person pageVariable
+  // Generated pageVariables
   const { person, setPerson, updatePersonMutation } = usePerson({
     filter: { id: "1" },
   });
 
-  // onSubmit interaction
+  // Generated interactions
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     updatePersonMutation(person);
   };
 
-  // Components
+  // Generated component structure
   return (
     <div>
       <form onSubmit={onSubmitHandler}>

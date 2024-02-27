@@ -1,15 +1,19 @@
-import { usePerson } from "./hooks/personHook";
+import { usePerson } from "./hooks/usePerson";
+import { usePersonResponse } from "./hooks/usePersonResponse";
 
 export function App() {
   // Generated pageVariables
-  const { person, setPerson, updatePersonMutation } = usePerson({
-    filter: { id: "1" },
-  });
+  const { person, setPerson, updatePersonMutation } = usePerson();
+  const { personResponse, setPersonResponse } = usePersonResponse();
 
   // Generated interactions
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    updatePersonMutation(person);
+    updatePersonMutation(person).then((response) => {
+      if ("data" in response) {
+        setPersonResponse(response.data);
+      }
+    });
   };
 
   // Generated component structure
@@ -24,6 +28,7 @@ export function App() {
         />
         <button type="submit">Submit</button>
       </form>
+      <p>response name: {personResponse?.name}</p>
     </div>
   );
 }

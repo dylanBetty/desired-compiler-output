@@ -5,9 +5,10 @@ import { setPerson } from "../slices/personSlice";
 import { RootState } from "../store";
 import { useGetPersonQuery, useUpdatePersonMutation } from "../slices/apiSlice";
 
-export function usePerson({ filter: { id } }: { filter: { id: string } }) {
+export function usePerson() {
   const dispatch = useDispatch();
-  const { data, isError, isFetching, isSuccess } = useGetPersonQuery(id);
+  const personId = "1";
+  const { data, isError, isFetching, isSuccess } = useGetPersonQuery(personId);
 
   useEffect(() => {
     if (data) {
@@ -18,7 +19,7 @@ export function usePerson({ filter: { id } }: { filter: { id: string } }) {
   const person = useSelector((state: RootState) => state.person);
 
   const setPersonWithDispatch = (args: { name: string }) =>
-    dispatch(setPerson({ ...args, id }));
+    dispatch(setPerson({ ...args, id: personId }));
 
   const [updatePersonMutation] = useUpdatePersonMutation();
 
